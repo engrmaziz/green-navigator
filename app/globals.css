@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-primary);
+
+  /* Font Families */
+  --font-sans: var(--font-dm-sans), sans-serif;
+  --font-mono: var(--font-jetbrains), monospace;
+  --font-display: var(--font-syne), sans-serif;
+
+  /* Feature Colors */
+  --color-primary: var(--emerald);
+  --color-primary-foreground: #000000;
+
+  --color-secondary: var(--bg-elevated);
+  --color-secondary-foreground: var(--text-primary);
+
+  --color-muted: var(--bg-elevated);
+  --color-muted-foreground: var(--text-muted);
+
+  --color-accent: var(--emerald-dim);
+  --color-accent-foreground: var(--emerald);
+
+  --color-destructive: var(--red-alert);
+  --color-destructive-foreground: #fff;
+
+  --color-border: var(--border-default);
+  --color-input: var(--border-default);
+  --color-ring: var(--emerald-glow);
+
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--text-primary);
+
+  --color-popover: var(--bg-elevated);
+  --color-popover-foreground: var(--text-primary);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* Font Variables */
+  --font-syne: 'Syne', sans-serif;
+  --font-dm-sans: 'DM Sans', sans-serif;
+  --font-jetbrains: 'JetBrains Mono', monospace;
+
+  /* Design System Foundation */
+  --bg-base: #0A0A0A;
+  --bg-surface: #121212;
+  --bg-elevated: #1A1A1A;
+  --bg-card: rgba(255, 255, 255, 0.04);
+
+  --emerald: #50C878;
+  --emerald-mid: #2D7A47;
+  --emerald-dim: rgba(80, 200, 120, 0.15);
+  --emerald-glow: rgba(80, 200, 120, 0.25);
+
+  --border-default: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(80, 200, 120, 0.35);
+
+  --text-primary: #F0F0F0;
+  --text-secondary: rgba(240, 240, 240, 0.65);
+  --text-muted: rgba(240, 240, 240, 0.40);
+  --text-emerald: #50C878;
+
+  --amber: #FFB347;
+  --red-alert: #FF5252;
+
+  --gradient-hero: linear-gradient(135deg, #0A0A0A 0%, #0d1f14 50%, #0A0A0A 100%);
+  --gradient-card: linear-gradient(145deg, rgba(80, 200, 120, 0.06), rgba(255, 255, 255, 0.02));
+  --gradient-emerald: linear-gradient(135deg, #50C878, #2D7A47);
+
+  /* Typography Scale */
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 15px;
+  --text-lg: 17px;
+  --text-xl: 22px;
+  --text-2xl: 32px;
+  --text-3xl: 48px;
+  --text-hero: clamp(64px, 8vw, 96px);
+  --text-mega: clamp(96px, 12vw, 140px);
+
+  /* Radix / Shadcn requirement maps */
+  --background: var(--bg-base);
+  --foreground: var(--text-primary);
+  --border: var(--border-default);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans relative antialiased selection:bg-emerald-500/25 selection:text-white;
+  }
+
+  /* Global Atmosphere Leaks */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse 600px 400px at 0% 0%, rgba(80, 200, 120, 0.07), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 500px;
+    height: 350px;
+    background: radial-gradient(ellipse 500px 350px at 100% 0%, rgba(45, 122, 71, 0.05), transparent);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-tight text-white;
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(80, 200, 120, 0.3);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(80, 200, 120, 0.5);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--border-default);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-card-hover {
+    transition: all 0.2s ease;
+  }
+
+  .glass-card-hover:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-glow);
+    box-shadow: 0 0 40px rgba(80, 200, 120, 0.15);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 60px rgba(80, 200, 120, 0.4);
+  }
+
+  .font-mono-data {
+    font-family: var(--font-jetbrains), monospace;
+  }
 }
