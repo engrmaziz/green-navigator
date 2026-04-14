@@ -47,3 +47,6 @@ Green Navigator bypasses generic global emission factors to provide high-accurac
 ## 6. Implementation Notes
 * **Immutable Records:** All processed bills are stored in the `emissions` ledger for auditability.
 * [cite_start]**Traceability:** Gemini extracts the `raw_text_found` for every metric to ensure data integrity[cite: 44, 109].
+
+## 7. Contribution Workflow
+All project changes, including updates to this `README.md`, should be implemented through a pull request.
